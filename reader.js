@@ -1,12 +1,13 @@
 const GitHulk = require('githulk');
 
-export default class Reader {
+module.exports = class Reader {
   constructor({hulk, github}) {
     if (hulk) {
       this.hulk = hulk;
     } else {
       this.hulk = new GitHulk(github);
     }
+    this._ctorArgs = arguments;
   }
 
   read() {
@@ -36,7 +37,11 @@ export default class Reader {
 
   filter(fn) {
     const prevPromise = this.read();
-    // TODO: should this make a new object or overwrite the existing promise.
-    // i.e. can I do `const foo = org.repos();  foo.filter(fn1).forEach(log); foo.filter(fn2).forEach(log);`
+    // We need to make a new object so that the filters don't conflict since we're memoizing the data promise
+    // e.g. Doing this is supported:  `const foo = org.repos();  foo.filter(fn1).forEach(log); foo.filter(fn2).forEach(log);`
+    // I think it has to. otherwise you have to start from the top again. :/
+    const newObject = new this.constructor(this._ctorArgs);
+    newObject._dataPromise = prevPromise.then(fn);
+    return newObject;
   }
 }

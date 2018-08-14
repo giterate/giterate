@@ -7,7 +7,7 @@ const definitions = {
   webhooks: require('./repos/webhooks')
 };
 
-export default class Repos extends Reader {
+module.exports = class Repos extends Reader {
   constructor(options) {
     super(...arguments);
 

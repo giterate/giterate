@@ -1,6 +1,6 @@
 const Reader = require('./reader');
 
-export default class ReaderWriter extends Reader {
+module.exports = class ReaderWriter extends Reader {
   constructor(options) {
     super(options);
   }

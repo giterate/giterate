@@ -1,6 +1,6 @@
-import ReaderWriter from '../reader-writer';
+const ReaderWriter = require('../reader-writer');
 
-export default class Labels extends ReaderWriter {
+module.exports = class Labels extends ReaderWriter {
   constructor(repos) {
     super(...arguments);
 
