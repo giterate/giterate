@@ -38,8 +38,11 @@ module.exports = class Reader {
   filter(fn) {
     const prevPromise = this.read();
     // We need to make a new object so that the filters don't conflict since we're memoizing the data promise
-    // e.g. Doing this is supported:  `const foo = org.repos();  foo.filter(fn1).forEach(log); foo.filter(fn2).forEach(log);`
-    // I think it has to. otherwise you have to start from the top again. :/
+    // e.g. Doing this is supported: `
+    //   const foo = org.repos();
+    //   foo.filter(repo => repo.name.startsWith('foo')).forEach(log);
+    //   foo.filter(repo => repo.name.startsWith('bar')).forEach(log);
+    // `
     const newObject = new this.constructor(this._ctorArgs);
     newObject._dataPromise = prevPromise.then(fn);
     return newObject;

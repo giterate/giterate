@@ -35,7 +35,7 @@ module.exports = class Repos extends Reader {
 Repos.define = function (method, ReaderWriter) {
   Repos.prototype[method] = function () {
     this._definitions[method] = this._definitions[method]
-      || new ReaderWriter(this);
+      || new ReaderWriter(this, ...arguments);
 
     // this._operations.push(() => {
     //   return await this._definitions[method].read()

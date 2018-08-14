@@ -1,10 +1,11 @@
 const ReaderWriter = require('../reader-writer');
 
 module.exports = class Labels extends ReaderWriter {
-  constructor(repos) {
+  constructor(repos, filterFn = null) {
     super(...arguments);
 
     this.repos = repos;
+    this.filterFn = filterFn;
   }
 
   async readCore() {
@@ -14,9 +15,26 @@ module.exports = class Labels extends ReaderWriter {
     // TODO: simplify with async map.
     for(const repo of repos) {
       // Get the data
-      // TODO: probably push a tuple here that give you repo-label pairs
-      data.push.apply(data, await this.hulk.labels(repo));
+      let labels = await this.readSingle(repo);
+      if (this.filterFn) {
+        labels = labels.filter(this.filterFn);
+      }
+      if (labels && labels.length) {
+        data.push.apply(data, labels.map(label => ({ repo, label })));
+      }
     }
     return data;
+  }
+
+  // TODO: Do this or just promisify all of githulk?
+  async readSingle(repo) {
+    return new Promise((resolve, reject) => {
+      this.hulk.labels.list(repo.full_name, null, (err, results) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(results);
+      })
+    })
   }
 }
