@@ -13,7 +13,6 @@ const labels = [
 ];
 
 describe('.labels()', function () {
-  this.timeout(5e4);
   it('.forEach(fn)', async () => {
     const repos = createRepos({ source: 'giterate/test-fixture' });
     await repos.labels().forEach(({ label }) => {
