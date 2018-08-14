@@ -8,10 +8,10 @@ const definitions = {
 };
 
 export default class Repos {
-  constructor({ source, client }) {
-    // this.hulk = new Githulk(client);
+  constructor({ source, client, hulk }) {
+    this.hulk = hulk || new Githulk(client);
     this._definitions = {};
-    this._operations = [];
+    this._data = [];
   }
 }
 
@@ -20,13 +20,17 @@ Repos.define = function (method, ReaderWriter) {
     this._definitions[method] = this._definitions[method]
       || new ReaderWriter(this);
 
-    this._operations.push(() => {
-      return await this._definitions[method].read()
-    });
+    // this._operations.push(() => {
+    //   return await this._definitions[method].read()
+    // });
+    return this._definitions[method];
   }
 };
 
 Object.entries(definitions)
-  .forEach([method, ReaderWriter] => {
+  .forEach(([method, ReaderWriter]) => {
     Repos.define(method, ReaderWriter);
-  })
+  });
+
+
+  //myRepos.labels().forEach(a => console.log(a))
