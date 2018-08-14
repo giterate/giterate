@@ -16,19 +16,50 @@ module.exports = class Repos extends Reader {
       return;
     }
 
-    const { source, client, hulk } = options;
+    const { source } = options;
     this._source = typeof source === 'string' ? [source] : source;
     this._org = org;
     this._definitions = {};
   }
 
   async readCore() {
+    const results = [];
     if (this._source) {
-      // TODO: get all the repos in _source from githulk
-      
+      for(const source of this._source) {
+        const repo = await this.getOne(source);
+        results.push(repo);
+      }
+      return results;
     }
 
-    // TODO: get all the repos from the org from githulk
+    const orgs = await this._org.read();
+    for(const org of orgs) {
+      const reposInOrg = await this.getFromOrg(org);
+      results.push.apply(results, reposInOrg);
+    }
+    return results;
+  }
+
+  getOne(source) {
+    return new Promise((resolve, reject) => {
+      this.hulk.repository.get(source, null, (err, results) => {
+        if (err) {
+          return void reject(err);
+        }
+        resolve(results);
+      });
+    })
+  }
+
+  getFromOrg(org) {
+    return new Promise((resolve, reject) => {
+      this.hulk.repository.list(org.name, null, (err, results) => {
+        if (err) {
+          return void reject(err);
+        }
+        resolve(results);
+      })
+    });
   }
 }
 

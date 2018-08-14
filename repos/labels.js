@@ -27,11 +27,11 @@ module.exports = class Labels extends ReaderWriter {
   }
 
   // TODO: Do this or just promisify all of githulk?
-  async readSingle(repo) {
+  readSingle(repo) {
     return new Promise((resolve, reject) => {
       this.hulk.labels.list(repo.full_name, null, (err, results) => {
         if (err) {
-          reject(err);
+          return void reject(err);
         }
         resolve(results);
       })
