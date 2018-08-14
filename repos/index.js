@@ -1,4 +1,5 @@
 const Reader = require('../reader');
+const define = require('../define');
 
 const definitions = {
   files: require('./files'),
@@ -62,16 +63,4 @@ const Repos = module.exports = class Repos extends Reader {
   }
 }
 
-Repos.define = function (method, ReaderWriter) {
-  Repos.prototype[method] = function () {
-    this._definitions[method] = this._definitions[method]
-      || new ReaderWriter(this, ...arguments);
-
-    return this._definitions[method];
-  }
-};
-
-Object.entries(definitions)
-  .forEach(([method, ReaderWriter]) => {
-    Repos.define(method, ReaderWriter);
-  });
+define(Repos, definitions);

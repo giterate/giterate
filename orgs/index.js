@@ -1,4 +1,5 @@
 const Reader = require('../reader');
+const define = require('../define');
 
 const definitions = {
   teams: require('./teams'),
@@ -34,16 +35,4 @@ const Orgs = module.exports = class Orgs extends Reader {
   }
 }
 
-Orgs.define = function (method, ReaderWriter) {
-  Orgs.prototype[method] = function () {
-    this._definitions[method] = this._definitions[method]
-      || new ReaderWriter(this, ...arguments);
-
-    return this._definitions[method];
-  }
-};
-
-Object.entries(definitions)
-  .forEach(([method, ReaderWriter]) => {
-    Orgs.define(method, ReaderWriter);
-  });
+define(Orgs, definitions);
