@@ -7,7 +7,7 @@ const definitions = {
   webhooks: require('./repos/webhooks')
 };
 
-module.exports = class Repos extends Reader {
+const Repos = module.exports = class Repos extends Reader {
   constructor(options) {
     super(...arguments);
 
@@ -17,6 +17,7 @@ module.exports = class Repos extends Reader {
     }
 
     const { source } = options;
+    const { source, org } = options;
     this._source = typeof source === 'string' ? [source] : source;
     this._org = org;
     this._definitions = {};

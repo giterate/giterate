@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const Githulk = require('githulk');
 const Repos = require('../repos');
 const Orgs = require('../orgs');
 
@@ -19,13 +20,13 @@ exports.getGithubAuth = function () {
 
   if (!githubAuth) {
     const {
-      GITERATE_KEY,
+      GITERATE_TOKEN,
       GITERATE_APP_ID,
       GITERATE_APP_SECRET
     } = process.env;
 
-    if (GITERATE_KEY) {
-      githubAuth = { key: GITERATE_KEY };
+    if (GITERATE_TOKEN) {
+      githubAuth = { token: GITERATE_TOKEN };
     } else if (GITERATE_APP_ID && GITERATE_APP_SECRET) {
       githubAuth = {
         app: {
@@ -39,12 +40,23 @@ exports.getGithubAuth = function () {
   }
 
   return githubAuth;
-}
+};
 
-exports.createRepos = function () {
+exports.createClient = function () {
   const auth = exports.getGithubAuth();
+  if (auth.token) {
+    return new Githulk({ token: auth.token });
+  }
+};
+
+exports.createRepos = function (opts) {
+  return new Repos(Object.assign({}, {
+    hulk: exports.createClient()
+  }, opts || {}));
 };
 
 exports.createOrgs = function () {
-
+  return new Orgs(Object.assign({}, {
+    hulk: exports.createClient()
+  }, opts || {}));
 };
