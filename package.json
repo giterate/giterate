@@ -4,7 +4,7 @@
   "description": "Iterate and perform operations over a given set of Git repositories.",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha test/*.test.js"
+    "test": "nyc mocha 'test/**/*.test.js'"
   },
   "repository": {
     "type": "git",
