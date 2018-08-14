@@ -16,7 +16,6 @@ const Repos = module.exports = class Repos extends Reader {
       return;
     }
 
-    const { source } = options;
     const { source, org } = options;
     this._source = typeof source === 'string' ? [source] : source;
     this._org = org;
