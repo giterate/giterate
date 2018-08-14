@@ -7,11 +7,20 @@ const definitions = {
   webhooks: require('./repos/webhooks')
 };
 
-export default class Repos {
-  constructor({ source, client, hulk }) {
+export default class Repos extends Reader {
+  constructor({ source, org, client, hulk }) {
     this.hulk = hulk || new Githulk(client);
+    this._source = source;
+    this._org = org;
     this._definitions = {};
-    this._data = [];
+  }
+
+  async readCore() {
+    if (this._source) {
+      // TODO: get all the repos in _source from githulk
+    }
+
+    // TODO: get all the repos from the org from githulk
   }
 }
 

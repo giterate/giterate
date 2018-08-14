@@ -1,21 +1,19 @@
 import ReaderWriter from '../reader-writer';
 
 export default class Labels extends ReaderWriter {
-  read() {
-    if (!this._dataPromise) {
-      this._dataPromise = this.readCore();
-    }
-
-    return this._dataPromise;    
+  constructor(repos) {
+    this.reposPromise = repos.read();
   }
 
   async readCore() {
     const data = []
-    for(const repo of this.repos) {
-      data.push.apply(this.data, await this.githulk.labels(repo));
+    // Read all the parent repos data
+    const repos = await this.reposPromise;
+    // TODO: simplify with async map.
+    for(const repo of repos) {
+      // Get the data
+      data.push.apply(data, await this.githulk.labels(repo));
     }
     return data;
   }
-
-
 }

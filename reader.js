@@ -4,6 +4,7 @@ export default class Reader {
   constructor(options) {}
 
   read() {
+    // Memoize the read promise to minimize github quota usage
     if (!this._dataPromise) {
       this._dataPromise = this.readCore();
     }
