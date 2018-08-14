@@ -1,11 +1,17 @@
 const GitHulk = require('githulk');
 
 export default class Reader {
-  constructor(options) {
-    this.githulk = options.githulk || new GitHulk(options.github);
-  }
+  constructor(options) {}
 
   async read(query) {
-    this.githulk.send(query);
+    throw new Error('Must be implemented by derived class');
+  }
+
+  forEach(fn) {
+
+  }
+
+  map(fn) {
+
   }
 }
