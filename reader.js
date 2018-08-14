@@ -43,7 +43,7 @@ module.exports = class Reader {
     //   foo.filter(repo => repo.name.startsWith('foo')).forEach(log);
     //   foo.filter(repo => repo.name.startsWith('bar')).forEach(log);
     // `
-    const newObject = new this.constructor(this._ctorArgs);
+    const newObject = new this.constructor(...this._ctorArgs);
     newObject._dataPromise = prevPromise.then(fn);
     return newObject;
   }

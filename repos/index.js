@@ -1,10 +1,11 @@
-const Reader = require('./reader');
+const Reader = require('../reader');
+const define = require('../define');
 
 const definitions = {
-  files: require('./repos/files'),
-  labels: require('./repos/labels'),
-  prs: require('./repos/prs'),
-  webhooks: require('./repos/webhooks')
+  files: require('./files'),
+  labels: require('./labels'),
+  prs: require('./prs'),
+  webhooks: require('./webhooks')
 };
 
 const Repos = module.exports = class Repos extends Reader {
@@ -52,7 +53,7 @@ const Repos = module.exports = class Repos extends Reader {
 
   getFromOrg(org) {
     return new Promise((resolve, reject) => {
-      this.hulk.repository.list(org.name, null, (err, results) => {
+      this.hulk.repository.list(org.login, { organization: true }, (err, results) => {
         if (err) {
           return void reject(err);
         }
@@ -62,22 +63,4 @@ const Repos = module.exports = class Repos extends Reader {
   }
 }
 
-Repos.define = function (method, ReaderWriter) {
-  Repos.prototype[method] = function () {
-    this._definitions[method] = this._definitions[method]
-      || new ReaderWriter(this, ...arguments);
-
-    // this._operations.push(() => {
-    //   return await this._definitions[method].read()
-    // });
-    return this._definitions[method];
-  }
-};
-
-Object.entries(definitions)
-  .forEach(([method, ReaderWriter]) => {
-    Repos.define(method, ReaderWriter);
-  });
-
-
-  //myRepos.labels().forEach(a => console.log(a))
+define(Repos, definitions);
