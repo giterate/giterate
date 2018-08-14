@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/indexzero/giterate/issues"
   },
-  "homepage": "https://github.com/indexzero/giterate#readme"
+  "homepage": "https://github.com/indexzero/giterate#readme",
+  "dependencies": {
+    "githulk": "^1.5.0"
+  }
 }
