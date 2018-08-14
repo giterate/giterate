@@ -13,7 +13,8 @@ describe('.files()', function () {
   let files = [
     '.gitignore',
     'LICENSE',
-    'README.md'
+    'README.md',
+    'tests'
   ];
 
   it('with file path', async () => {
