@@ -1,11 +1,11 @@
 
 // # Repositories
 
-const Giterate = require('giterate');
+const { Orgs, Repos } = require('giterate');
 
-const repos = new Giterate(source);
-const repos = new Giterate({ source });
-const repos = new Giterate([
+const repos = new Repos(source);
+const repos = new Repos({ source });
+const repos = new Repos([
   'orgname',
   'another-org/reponame'
   /*
@@ -56,20 +56,19 @@ repos
   .filter(file => /.md$/.test(file))
 
 repos
-  .commits()          // All commits
-  .prs()              // All PRs
-  .issues()           // All issues
-  .contributors(kind) // All contributors of the specified "kind": PR, commit, issue, comment.
-  .committers()       // All past committers
+  // .commits()          // All commits
+  // .prs()              // All PRs
+  // .issues()           // All issues
+  // .contributors(kind) // All contributors of the specified "kind": PR, commit, issue, comment.
+  // .committers()       // All past committers
   .labels()           // All issue labels
-  .teams()            // All repo teams
-  .tags()             // All repo tags
-  .branches()         // All repo branches
+  // .tags()             // All repo tags
+  // .branches()         // All repo branches
   .webhooks()         // All webhooks
 
   .sort(pred)         // Sort based on predicate `pred`
   .filter(pred)       // Filter based on predicate `pred`
-  .within(range)      // Filter within a time range
+  // .within(range)      // Filter within a time range
 
   .update()           // Accept a set of updates (may not work on every data type)
   .pr(data)           // Creates a new PR
@@ -79,7 +78,7 @@ repos
 // If only orgs are provided to Giterate then operations on the
 // organizations themselves can be performed.
 
-const orgs = new Giterate([
+const orgs = new Orgs([
   'org1',
   'org2',
   { login: 'github '},

@@ -51,6 +51,9 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
+# Local auth files
+.localauth
+
 # Yarn Integrity file
 .yarn-integrity
 
