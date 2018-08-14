@@ -1,7 +1,7 @@
 const assume = require('assume');
 const { createRepos } = require('../helpers');
 
-describe.only('.files()', function () {
+describe('.files()', function () {
   let repos;
 
   beforeEach(() => {
