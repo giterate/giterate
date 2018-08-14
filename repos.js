@@ -16,9 +16,8 @@ const Repos = module.exports = class Repos extends Reader {
       return;
     }
 
-    const { source, org } = options;
+    const { source } = options;
     this._source = typeof source === 'string' ? [source] : source;
-    this._org = org;
     this._definitions = {};
   }
 
@@ -46,7 +45,7 @@ const Repos = module.exports = class Repos extends Reader {
         if (err) {
           return void reject(err);
         }
-        resolve(results);
+        resolve(results[0]);
       });
     })
   }

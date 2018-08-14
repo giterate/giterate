@@ -23,6 +23,7 @@ module.exports = class Labels extends ReaderWriter {
         data.push.apply(data, labels.map(label => ({ repo, label })));
       }
     }
+
     return data;
   }
 

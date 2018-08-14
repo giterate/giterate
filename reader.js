@@ -16,7 +16,7 @@ module.exports = class Reader {
       this._dataPromise = this.readCore();
     }
 
-    return this._dataPromise;    
+    return this._dataPromise;
   }
 
   async readCore() {
@@ -25,7 +25,7 @@ module.exports = class Reader {
 
   async forEach(fn) {
     const data = await this.read();
-    for(const item in data) {
+    for(const item of data) {
       fn(item);
     }
   }
