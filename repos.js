@@ -8,9 +8,16 @@ const definitions = {
 };
 
 export default class Repos extends Reader {
-  constructor({ source, org, client, hulk }) {
-    this.hulk = hulk || new Githulk(client);
-    this._source = source;
+  constructor(options) {
+    super(...arguments);
+
+    if (options && options.read) {
+      this._org = options;
+      return;
+    }
+
+    const { source, client, hulk } = options;
+    this._source = typeof source === 'string' ? [source] : source;
     this._org = org;
     this._definitions = {};
   }
@@ -18,6 +25,7 @@ export default class Repos extends Reader {
   async readCore() {
     if (this._source) {
       // TODO: get all the repos in _source from githulk
+      
     }
 
     // TODO: get all the repos from the org from githulk
