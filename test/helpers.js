@@ -11,7 +11,7 @@ exports.getGithubAuth = function () {
   if (githubAuth) { return githubAuth; }
 
   try {
-    githubAuth = fs.readFileSync(localAuthFile);
+    githubAuth = JSON.parse(fs.readFileSync(localAuthFile, { encoding: 'utf-8' }));
   } catch (err) {
     if (err.code !== 'ENOENT') {
       throw err;
@@ -55,7 +55,7 @@ exports.createRepos = function (opts) {
   }, opts || {}));
 };
 
-exports.createOrgs = function () {
+exports.createOrgs = function (opts) {
   return new Orgs(Object.assign({}, {
     hulk: exports.createClient()
   }, opts || {}));
