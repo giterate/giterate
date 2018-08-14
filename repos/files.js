@@ -1,8 +1,9 @@
 const ReaderWriter = require('../reader-writer');
 
-module.exports = class Labels extends ReaderWriter {
-  constructor(repos, filterFn = null, path = "/") {
+module.exports = class Files extends ReaderWriter {
+  constructor(repos, ops = {})  {
     super(...arguments);
+    const {filterFn = null, path = "/"} = ops;
     this.repos = repos;
     this.filterFn = filterFn;
     this.path = path;

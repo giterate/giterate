@@ -18,7 +18,7 @@ describe('.files()', function () {
 
   it('with file path', async () => {
     const repos = createRepos({ source: 'giterate/test-fixture' });
-    await repos.files(null, './README.md').forEach(({file}) => {
+    await repos.files({path: './README.md'}).forEach(({file}) => {
       assume(file.name).equals('README.md');
     });
   });
