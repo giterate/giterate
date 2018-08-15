@@ -29,7 +29,7 @@ describe('.files()', function () {
     });
   });
 
-  it('with file contents', async () => {
+  it('get file contents', async () => {
     const repos = createRepos({ source: 'giterate/test-fixture' });
     await repos.files({path: './tests/test1.md'}).contents().forEach(({file, content}) => {
       assume(file.name).equals('test1.md');
@@ -37,7 +37,7 @@ describe('.files()', function () {
     });
   });
 
-  it('multiple file contents', async () => {
+  it('get multiple file contents', async () => {
     const repos = createRepos({ source: 'giterate/test-fixture' });
     const allFiles = await repos.files({path: './tests'}).contents().read();
     assume(allFiles.length).equals(2);
