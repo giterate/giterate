@@ -1,6 +1,11 @@
 const ReaderWriter = require('../reader-writer');
+const define = require('../define');
 
-module.exports = class Files extends ReaderWriter {
+const definitions = {
+    contents: require('./contents')
+};
+
+const Files = module.exports = class Files extends ReaderWriter {
   constructor(repos, ops = {})  {
     super(...arguments);
     const {filterFn = null, path = "/"} = ops;
@@ -40,3 +45,5 @@ module.exports = class Files extends ReaderWriter {
     })
   }
 }
+
+define(Files, definitions);

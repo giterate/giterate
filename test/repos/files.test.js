@@ -8,7 +8,7 @@ describe('.files()', function () {
     repos = createRepos();
   })
 
-//  this.timeout(50000);
+  this.timeout(50000);
 
   let files = [
     '.gitignore',
@@ -17,10 +17,34 @@ describe('.files()', function () {
     'tests'
   ];
 
+  const testContent = {
+    'test1.md': 'short string of text for tests',
+    'test2.md': 'another string o\' text'
+  }
+
   it('with file path', async () => {
     const repos = createRepos({ source: 'giterate/test-fixture' });
     await repos.files({path: './README.md'}).forEach(({file}) => {
       assume(file.name).equals('README.md');
+    });
+  });
+
+  it.only('with file contents', async () => {
+    const repos = createRepos({ source: 'giterate/test-fixture' });
+    await repos.files({path: './tests/test1.md'}).contents().forEach(({file, content}) => {
+      assume(file.name).equals('test1.md');
+      assume(content).equals('short string of text for tests');
+    });
+  });
+
+  it.only('multiple file contents', async () => {
+    const repos = createRepos({ source: 'giterate/test-fixture' });
+    const allFiles = await repos.files({path: './tests'}).contents().read();
+    assume(allFiles.length).equals(2);
+    allFiles.forEach(({repo, file, content}) => {
+      const fileName = file.name;
+      assume(testContent[fileName]).exists();
+      assume(testContent[fileName]).equals(content);
     });
   });
 
