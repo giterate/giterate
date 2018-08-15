@@ -1,7 +1,20 @@
+const assume = require('assume');
 const { createRepos } = require('../helpers');
 
-describe('.prs()', function () {
-  it('.forEach(fn)', function (done) {
+const baseUrl = 'https://github.com/giterate/test-fixture-mutable/pull/';
+
+describe('.prs()', () => {
+  it('.createPrsForOneBranchName', async (done) => {
+    const branchName = 'test-branch-name';
+
+    const repos = createRepos({ source: 'giterate/test-fixture-mutable' });
+    const response = await repos.prs().createPRsForOneBranchName(branchName)
+    
+    console.log(response);
+
+    for (const result of response) {
+      assume(result.urls).includes(baseUrl);
+    }
     done();
   });
 });
