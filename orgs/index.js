@@ -11,12 +11,11 @@ const Orgs = module.exports = class Orgs extends Reader {
     super(...arguments);
 
     this._orgs = typeof orgs === 'string' ? [orgs] : orgs;
-    this._definitions = {};
   }
 
   async readCore() {
     const results = [];
-    for(const orgName of this._orgs) {
+    for (const orgName of this._orgs) {
       const org = await this.getOne(orgName);
       results.push(org);
     }
@@ -31,8 +30,8 @@ const Orgs = module.exports = class Orgs extends Reader {
         }
         resolve(results[0]);
       });
-    })
+    });
   }
-}
+};
 
 define(Orgs, definitions);

@@ -1,7 +1,7 @@
 const GitHulk = require('githulk');
 
 module.exports = class Reader {
-  constructor({hulk, github}) {
+  constructor({ hulk, github }) {
     if (hulk) {
       this.hulk = hulk;
     } else {
@@ -25,7 +25,7 @@ module.exports = class Reader {
 
   async forEach(fn) {
     const data = await this.read();
-    for(const item of data) {
+    for (const item of data) {
       fn(item);
     }
   }
@@ -47,4 +47,4 @@ module.exports = class Reader {
     newObject._dataPromise = prevPromise.then(fn);
     return newObject;
   }
-}
+};
