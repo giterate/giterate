@@ -1,5 +1,6 @@
 function defineOne(Type, method, ReaderWriter) {
   Type.prototype[method] = function () {
+    this._definitions = this._definitions || {};
     this._definitions[method] = this._definitions[method]
       || new ReaderWriter(this, ...arguments);
 
