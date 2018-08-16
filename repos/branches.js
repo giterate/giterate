@@ -135,4 +135,4 @@ const Branches = module.exports = class Branches extends ReaderWriter {
   }
 };
 
-define(Branches, definitions);
+define(Branches, Object.assign({}, definitions, { branches: Branches }));

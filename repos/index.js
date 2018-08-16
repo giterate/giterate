@@ -56,4 +56,4 @@ const Repos = module.exports = class Repos extends Reader {
   }
 };
 
-define(Repos, definitions);
+define(Repos, Object.assign({}, definitions, { branches: require('./branches') }));
