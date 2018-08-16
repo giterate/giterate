@@ -2,24 +2,24 @@ const ReaderWriter = require('../reader-writer');
 const define = require('../define');
 
 const definitions = {
-    contents: require('./contents')
+  contents: require('./contents')
 };
 
 const Files = module.exports = class Files extends ReaderWriter {
   constructor(repos, ops = {})  {
     super(...arguments);
-    const {filterFn = null, path = "/"} = ops;
+    const { filterFn = null, path = '/' } = ops;
     this.repos = repos;
     this.filterFn = filterFn;
     this.path = path;
   }
 
   async readCore() {
-    const data = []
+    const data = [];
     // Read all the parent repos data
     const repos = await this.repos.read();
     // TODO: simplify with async map.
-    for(const repo of repos) {
+    for (const { repo } of repos) {
       // Get the data
       let files = await this.readSingle(repo);
       if (this.filterFn) {
@@ -41,9 +41,9 @@ const Files = module.exports = class Files extends ReaderWriter {
           return void reject(err);
         }
         resolve(results);
-      })
-    })
+      });
+    });
   }
-}
+};
 
 define(Files, definitions);

@@ -3,7 +3,7 @@ const ReaderWriter = require('../reader-writer');
 module.exports = class Labels extends ReaderWriter {
   constructor(repos,  ops = {}) {
     super(...arguments);
-    const {filterFn = null, path = "/"} = ops;
+    const { filterFn = null } = ops;
     this.repos = repos;
     this.filterFn = filterFn;
   }

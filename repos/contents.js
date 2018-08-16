@@ -3,20 +3,20 @@ const ReaderWriter = require('../reader-writer');
 module.exports = class Contents extends ReaderWriter {
   constructor(files, ops = {})  {
     super(...arguments);
-    const {filterFn = null} = ops;
+    const { filterFn = null } = ops;
     this.files = files;
     this.filterFn = filterFn;
   }
 
   async readCore() {
-    const data = []
+    const data = [];
     const files = await this.files.read();
-    for(const {repo, file} of files) {
+    for (const { repo, file } of files) {
       let content = file.content;
-      if(!content) {
+      if (!content) {
         const temp = await this.readSingle(repo, file);
         content = temp.content;
-      } 
+      }
       content = Buffer.from(content || '', 'base64').toString();
       data.push({ repo, file, content });
     }
@@ -32,8 +32,8 @@ module.exports = class Contents extends ReaderWriter {
           return void reject(err);
         }
         resolve(results);
-      })
-    })
+      });
+    });
   }
-}
+};
 
