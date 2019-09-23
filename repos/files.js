@@ -2,7 +2,7 @@ const ReaderWriter = require('../reader-writer');
 const define = require('../define');
 
 const definitions = {
-    contents: require('./contents')
+  contents: require('./contents')
 };
 
 const Files = module.exports = class Files extends ReaderWriter {

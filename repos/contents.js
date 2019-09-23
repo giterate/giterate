@@ -3,7 +3,7 @@ const ReaderWriter = require('../reader-writer');
 module.exports = class Contents extends ReaderWriter {
   constructor(files, ops = {})  {
     super(...arguments);
-    const {filterFn = null} = ops;
+    const { filterFn = null } = ops;
     this.files = files;
     this.filterFn = filterFn;
   }

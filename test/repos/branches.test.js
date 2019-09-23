@@ -18,22 +18,22 @@ describe('.branches()', function () {
       assume(branches).includes(branch.name);
     });
   });
-  
+
   describe('.create()', function () {
     it('creates a branch from a repo', async () => {
       const repos = createRepos({ source: 'giterate/test-fixture-mutable' });
       const branchName = `unit-test-${uuidv4()}`;
-      const branches = repos.branches().create(branchName);
-      const branchNames = await branches.map(({ branch }) => branch.name);
+      const repoBranches = repos.branches().create(branchName);
+      const branchNames = await repoBranches.map(({ branch }) => branch.name);
       assume(branchNames).to.have.length(1);
       assume(branchNames).contains(branchName);
-  
-      await branches.delete();
+
+      await repoBranches.delete();
     });
-  
+
     it('creates a branch from a branch', async () => {
       const repos = createRepos({ source: 'giterate/test-fixture-mutable' });
-      const parentBranches = repos.branches().filter(({branch}) => branch.name === 'test-branch-name');
+      const parentBranches = repos.branches().filter(({ branch }) => branch.name === 'test-branch-name');
       const parentBranchNames = await parentBranches.map(({ branch }) => branch.name);
       assume(parentBranchNames).to.have.length(1);
       const parentBranchSha = (await parentBranches.read())[0].branch.commit.sha;
@@ -45,6 +45,6 @@ describe('.branches()', function () {
       assume(childBranchData[0].branch.commit.sha).to.equal(parentBranchSha);
 
       await childBranches.delete();
-    })
+    });
   });
 });
