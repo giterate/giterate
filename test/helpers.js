@@ -11,6 +11,7 @@ exports.getGithubAuth = function () {
   if (githubAuth) { return githubAuth; }
 
   try {
+    // eslint-disable-next-line no-sync
     githubAuth = JSON.parse(fs.readFileSync(localAuthFile, { encoding: 'utf-8' }));
   } catch (err) {
     if (err.code !== 'ENOENT') {

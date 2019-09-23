@@ -1,7 +1,7 @@
 const GitHulk = require('githulk');
 
 module.exports = class Reader {
-  constructor({hulk, github}) {
+  constructor({ hulk, github }) {
     if (hulk) {
       this.hulk = hulk;
     } else {
@@ -25,7 +25,7 @@ module.exports = class Reader {
 
   async forEach(fn) {
     const data = await this.read();
-    for(const item of data) {
+    for (const item of data) {
       fn(item);
     }
   }
@@ -36,15 +36,20 @@ module.exports = class Reader {
   }
 
   filter(fn) {
-    const prevPromise = this.read();
     // We need to make a new object so that the filters don't conflict since we're memoizing the data promise
     // e.g. Doing this is supported: `
     //   const foo = org.repos();
     //   foo.filter(repo => repo.name.startsWith('foo')).forEach(log);
     //   foo.filter(repo => repo.name.startsWith('bar')).forEach(log);
     // `
+    const prevPromise = this.read();
+    const newPromise = prevPromise.then(data => data.filter(fn));
+    return this._cloneWithData(newPromise);
+  }
+
+  _cloneWithData(dataPromise) {
     const newObject = new this.constructor(...this._ctorArgs);
-    newObject._dataPromise = prevPromise.then(fn);
+    newObject._dataPromise = dataPromise;
     return newObject;
   }
-}
+};

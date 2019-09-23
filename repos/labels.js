@@ -3,17 +3,17 @@ const ReaderWriter = require('../reader-writer');
 module.exports = class Labels extends ReaderWriter {
   constructor(repos,  ops = {}) {
     super(...arguments);
-    const {filterFn = null, path = "/"} = ops;
+    const { filterFn = null } = ops;
     this.repos = repos;
     this.filterFn = filterFn;
   }
 
   async readCore() {
-    const data = []
+    const data = [];
     // Read all the parent repos data
     const repos = await this.repos.read();
     // TODO: simplify with async map.
-    for(const repo of repos) {
+    for (const { repo } of repos) {
       // Get the data
       let labels = await this.readSingle(repo);
       if (this.filterFn) {
@@ -35,7 +35,7 @@ module.exports = class Labels extends ReaderWriter {
           return void reject(err);
         }
         resolve(results);
-      })
-    })
+      });
+    });
   }
-}
+};
