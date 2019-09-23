@@ -9,11 +9,11 @@ module.exports = class Labels extends ReaderWriter {
   }
 
   async readCore() {
-    const data = []
+    const data = [];
     // Read all the parent repos data
     const repos = await this.repos.read();
     // TODO: simplify with async map.
-    for(const repo of repos) {
+    for (const { repo } of repos) {
       // Get the data
       let labels = await this.readSingle(repo);
       if (this.filterFn) {
@@ -35,7 +35,7 @@ module.exports = class Labels extends ReaderWriter {
           return void reject(err);
         }
         resolve(results);
-      })
-    })
+      });
+    });
   }
-}
+};

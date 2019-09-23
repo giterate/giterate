@@ -2,15 +2,9 @@ const assume = require('assume');
 const { createRepos } = require('../helpers');
 
 describe('.files()', function () {
-  let repos;
-
-  beforeEach(() => {
-    repos = createRepos();
-  })
-
   this.timeout(50000);
 
-  let files = [
+  const files = [
     '.gitignore',
     'LICENSE',
     'README.md',
@@ -20,28 +14,28 @@ describe('.files()', function () {
   const testContent = {
     'test1.md': 'short string of text for tests',
     'test2.md': 'another string o\' text'
-  }
+  };
 
   it('with file path', async () => {
     const repos = createRepos({ source: 'giterate/test-fixture' });
-    await repos.files({path: './README.md'}).forEach(({file}) => {
+    await repos.files({ path: './README.md' }).forEach(({ file }) => {
       assume(file.name).equals('README.md');
     });
   });
 
-  it('get file contents', async () => {
+  it('with file contents', async () => {
     const repos = createRepos({ source: 'giterate/test-fixture' });
-    await repos.files({path: './tests/test1.md'}).contents().forEach(({file, content}) => {
+    await repos.files({ path: './tests/test1.md' }).contents().forEach(({ file, content }) => {
       assume(file.name).equals('test1.md');
       assume(content).equals('short string of text for tests');
     });
   });
 
-  it('get multiple file contents', async () => {
+  it('multiple file contents', async () => {
     const repos = createRepos({ source: 'giterate/test-fixture' });
-    const allFiles = await repos.files({path: './tests'}).contents().read();
+    const allFiles = await repos.files({ path: './tests' }).contents().read();
     assume(allFiles.length).equals(2);
-    allFiles.forEach(({repo, file, content}) => {
+    allFiles.forEach(({ file, content }) => {
       const fileName = file.name;
       assume(testContent[fileName]).exists();
       assume(testContent[fileName]).equals(content);
@@ -50,7 +44,7 @@ describe('.files()', function () {
 
   it('.forEach(fn)', async () => {
     const repos = createRepos({ source: 'giterate/test-fixture' });
-    await repos.files().forEach(({ file}) => {
+    await repos.files().forEach(({ file }) => {
       assume(files).includes(file.name);
     });
   });

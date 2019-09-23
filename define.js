@@ -5,12 +5,12 @@ function defineOne(Type, method, ReaderWriter) {
       || new ReaderWriter(this, ...arguments);
 
     return this._definitions[method];
-  }
-};
+  };
+}
 
 module.exports = function define(Type, definitions) {
   Object.entries(definitions)
     .forEach(([method, ReaderWriter]) => {
       defineOne(Type, method, ReaderWriter);
     });
-}
+};

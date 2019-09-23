@@ -1,12 +1,6 @@
 const Reader = require('../reader');
 const define = require('../define');
-
-const definitions = {
-  files: require('./files'),
-  labels: require('./labels'),
-  prs: require('./prs'),
-  webhooks: require('./webhooks')
-};
+const definitions = require('./definitions');
 
 const Repos = module.exports = class Repos extends Reader {
   constructor(options) {
@@ -19,23 +13,22 @@ const Repos = module.exports = class Repos extends Reader {
 
     const { source } = options;
     this._source = typeof source === 'string' ? [source] : source;
-    this._definitions = {};
   }
 
   async readCore() {
     const results = [];
     if (this._source) {
-      for(const source of this._source) {
+      for (const source of this._source) {
         const repo = await this.getOne(source);
-        results.push(repo);
+        results.push({ repo });
       }
       return results;
     }
 
     const orgs = await this._org.read();
-    for(const org of orgs) {
+    for (const org of orgs) {
       const reposInOrg = await this.getFromOrg(org);
-      results.push.apply(results, reposInOrg);
+      results.push.apply(results, reposInOrg.map(repo => ({ repo })));
     }
     return results;
   }
@@ -48,7 +41,7 @@ const Repos = module.exports = class Repos extends Reader {
         }
         resolve(results[0]);
       });
-    })
+    });
   }
 
   getFromOrg(org) {
@@ -58,9 +51,9 @@ const Repos = module.exports = class Repos extends Reader {
           return void reject(err);
         }
         resolve(results);
-      })
+      });
     });
   }
-}
+};
 
-define(Repos, definitions);
+define(Repos, Object.assign({}, definitions, { branches: require('./branches') }));
