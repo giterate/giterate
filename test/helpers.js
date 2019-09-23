@@ -11,6 +11,7 @@ exports.getGithubAuth = function () {
   if (githubAuth) { return githubAuth; }
 
   try {
+    // eslint-disable-next-line no-sync
     githubAuth = JSON.parse(fs.readFileSync(localAuthFile, { encoding: 'utf-8' }));
   } catch (err) {
     if (err.code !== 'ENOENT') {
@@ -23,6 +24,7 @@ exports.getGithubAuth = function () {
       GITERATE_TOKEN,
       GITERATE_APP_ID,
       GITERATE_APP_SECRET
+      // eslint-disable-next-line no-process-env
     } = process.env;
 
     if (GITERATE_TOKEN) {

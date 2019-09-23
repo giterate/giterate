@@ -5,7 +5,7 @@ module.exports = class ReaderWriter extends Reader {
     super(options);
   }
 
-  async write(query) {
+  async write() {
 
   }
-}
+};
