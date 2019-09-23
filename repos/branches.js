@@ -18,7 +18,7 @@ const Branches = module.exports = class Branches extends ReaderWriter {
       // Get the data
       const branches = await this.readSingle(repo);
       if (branches && branches.length) {
-        data.push.apply(data, branches.map(branch => ({ repo, branch })));
+        data.push(...branches.map(branch => ({ repo, branch })));
       }
     }
 
