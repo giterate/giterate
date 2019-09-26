@@ -6,7 +6,8 @@ const uuidv4 = require('uuid/v4');
 const branches = [
   'master',
   'branch-one',
-  'branch-two'
+  'branch-two',
+  'pull-request-branch'
 ];
 
 describe('.branches()', function () {
