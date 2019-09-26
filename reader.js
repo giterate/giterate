@@ -19,6 +19,15 @@ module.exports = class Reader {
     return this._dataPromise;
   }
 
+  /**
+   * A synonym for `read`, but can feel nicer for code that may side-effect and you don't care about the response
+   * @example await giterate().repos().branch().create('foo').evaluate();
+   * @returns {Promise} A promise
+   */
+  evaluate() {
+    return this.read();
+  }
+
   async readCore() {
     throw new Error('Must be implemented by derived class');
   }

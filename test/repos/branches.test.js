@@ -13,7 +13,7 @@ const branches = [
 describe('.branches()', function () {
   this.timeout(5e4);
 
-  it('.forEach(fn)', async () => {
+  it('.forEach(fn)', async function () {
     const repos = createRepos({ source: 'giterate/test-fixture' });
     await repos.branches().forEach(({ branch }) => {
       assume(branches).includes(branch.name);
@@ -21,7 +21,7 @@ describe('.branches()', function () {
   });
 
   describe('.create()', function () {
-    it('creates a branch from a repo', async () => {
+    it('creates a branch from a repo', async function () {
       const repos = createRepos({ source: 'giterate/test-fixture-mutable' });
       const branchName = `unit-test-${uuidv4()}`;
       const repoBranches = repos.branches().create(branchName);
@@ -32,7 +32,7 @@ describe('.branches()', function () {
       await repoBranches.delete();
     });
 
-    it('creates a branch from a branch', async () => {
+    it('creates a branch from a branch', async function () {
       const repos = createRepos({ source: 'giterate/test-fixture-mutable' });
       const parentBranches = repos.branches().filter(({ branch }) => branch.name === 'test-branch-name');
       const parentBranchNames = await parentBranches.map(({ branch }) => branch.name);

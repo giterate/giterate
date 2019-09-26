@@ -13,7 +13,7 @@ const labels = [
 ];
 
 describe('.labels()', function () {
-  it('.forEach(fn)', async () => {
+  it('.forEach(fn)', async function () {
     const repos = createRepos({ source: 'giterate/test-fixture' });
     await repos.labels().forEach(({ label }) => {
       assume(labels).includes(label.name);
