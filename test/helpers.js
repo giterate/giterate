@@ -24,6 +24,7 @@ exports.getGithubAuth = function () {
       GITERATE_TOKEN,
       GITERATE_APP_ID,
       GITERATE_APP_SECRET
+      // eslint-disable-next-line no-process-env
     } = process.env;
 
     if (GITERATE_TOKEN) {
