@@ -10,7 +10,7 @@ describe('.prs()', function () {
     'https://github.com/giterate/test-fixture/pull/1'
   ];
 
-  it('.forEach(fn)', async () => {
+  it('.forEach(fn)', async function () {
     const repos = createRepos({ source: 'giterate/test-fixture' });
     let wasCalled = false;
     await repos.prs().forEach(({ pr }) => {
@@ -42,10 +42,4 @@ describe('.prs()', function () {
 
     await prs.close();
   });
-
-  // TODO: Make a more E2E test (in another file) that can:
-  //    1. create a new branch,
-  //    2. edit/create a file,
-  //    3. push the change to a branch,
-  //    4. then create a PR from it.
 });

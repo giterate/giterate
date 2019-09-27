@@ -40,5 +40,20 @@ module.exports = class Contents extends ReaderWriter {
       });
     });
   }
+
+  update(contents, message = 'Updated by giterate') {
+    const contentUpdater = typeof contents === 'string' ?
+      () => contents :
+      contents;
+
+    return this._cloneWithData(this.updateCore(contentUpdater, message));
+  }
+
+  async updateCore(contentsFn, message) {
+    const data = await this.read();
+    return Promise.all(
+      data.map(current => this.files.createOrUpdateSingle(current, contentsFn(current), message))
+    );
+  }
 };
 
