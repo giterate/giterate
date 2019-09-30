@@ -62,16 +62,17 @@ const Files = module.exports = class Files extends ReaderWriter {
   async createCore(contentsFn, message) {
     const repos = await this.repos.read();
     return Promise.all(
-      repos.map(({ repo, branch }) => ({
+      repos.map(({ repo, branch }) => this.createOrUpdateSingle({
         repo,
         branch,
         file: { path: this.path }
-      })).map(current => this.createOrUpdateSingle(
-        current, contentsFn(current), message))
+      }, contentsFn, message))
     );
   }
 
-  async createOrUpdateSingle({ repo, branch, file }, newContent, message) {
+  async createOrUpdateSingle(fileOrContents, contentsFn, message) {
+    const { repo, branch, file } = fileOrContents;
+    const newContent = await contentsFn(fileOrContents);
     return new Promise((resolve, reject) => {
       const data = {
         message,

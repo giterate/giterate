@@ -1,6 +1,6 @@
 const assume = require('assume');
 const uuid = require('uuid/v4');
-const { createRepos } = require('../helpers');
+const { createRepos, wait } = require('../helpers');
 
 describe('.files()', function () {
   this.timeout(50000);
@@ -108,6 +108,31 @@ describe('.files()', function () {
     });
   });
 
+  it('updates files with an async function', async function () {
+    const path = './README.md';
+    const repos = createRepos({ source: 'giterate/test-fixture-mutable' });
+    const filesObjects = repos.files({ path });
+    const injectedContent =  `<!-- Last updated on ${ new Date() }-->`;
+
+    // Update the file contents and get the new shas
+    await filesObjects.contents().update(
+      async ({ content }) => wait(1, content.replace(
+        /<!--.*-->/g,
+        injectedContent)
+      ))
+      .evaluate();
+
+    // Make sure content changed
+    const refreshedContent = await createRepos({ source: 'giterate/test-fixture-mutable' })
+      .files({ path })
+      .contents()
+      .map(({ content }) => content);
+    assume(refreshedContent).to.have.length(1);
+    refreshedContent.forEach((newContent) => {
+      assume(newContent).to.contain(injectedContent);
+    });
+  });
+
   it('creates files', async function () {
     const path = `./${ uuid() }.md`;
     const fileContents = `# Test file @ ${ new Date() }`;
@@ -129,6 +154,38 @@ describe('.files()', function () {
     assume(refreshedContent).to.have.length(1);
     refreshedContent.forEach((newContent) => {
       assume(newContent).to.contain(fileContents);
+    });
+
+    // delete it
+    await refreshedFiles.delete().evaluate();
+
+    // Make sure it deleted
+    await assume(repos.files({ path }).read()).to.throwAsync();
+  });
+
+  it('creates files with async content function', async function () {
+    const path = `./${ uuid() }.md`;
+    async function getFileContents({ file }) {
+      return await wait(1, `# Test file @ ${ new Date() } @ ${ file.path }`);
+    }
+    const repos = createRepos({ source: 'giterate/test-fixture-mutable' });
+
+    // Make sure the file we're about to create doesn't already exist
+    await assume(repos.files({ path }).read()).to.throwAsync();
+
+    // Create the file
+    await repos.files({ path }).create(getFileContents).evaluate();
+
+    // Get the file and validate
+    const refreshedFiles = createRepos({ source: 'giterate/test-fixture-mutable' })
+      .files({ path });
+    const refreshedContent = await refreshedFiles
+      .contents()
+      .map(({ content }) => content);
+
+    assume(refreshedContent).to.have.length(1);
+    refreshedContent.forEach((newContent) => {
+      assume(newContent).to.contain(` @ ${ path }`);
     });
 
     // delete it

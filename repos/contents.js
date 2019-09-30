@@ -52,7 +52,7 @@ module.exports = class Contents extends ReaderWriter {
   async updateCore(contentsFn, message) {
     const data = await this.read();
     return Promise.all(
-      data.map(current => this.files.createOrUpdateSingle(current, contentsFn(current), message))
+      data.map(current => this.files.createOrUpdateSingle(current, contentsFn, message))
     );
   }
 };

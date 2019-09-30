@@ -62,3 +62,9 @@ exports.createOrgs = function (opts) {
     hulk: exports.createClient()
   }, opts || {}));
 };
+
+exports.wait = function (delayInMs, ...args) {
+  return new Promise(resolve => {
+    setTimeout(resolve, delayInMs, ...args);
+  });
+};
