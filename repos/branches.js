@@ -46,7 +46,7 @@ const Branches = module.exports = class Branches extends ReaderWriter {
     const reposNeedingCreates = [];
     const completedBranches = await this.filter((tuple) => tuple.branch.name === name).read();
     for (const { repo, branch } of repos) {
-      if (!completedBranches.find(({ branchRepo }) => branchRepo.full_name === repo.full_name)) {
+      if (!completedBranches.find(({ repo: branchRepo }) => branchRepo.full_name === repo.full_name)) {
         reposNeedingCreates.push({ repo, branch });
       }
     }
